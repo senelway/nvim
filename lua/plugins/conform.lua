@@ -1,5 +1,6 @@
 return {
-  'stevearc/conform.nvim',
+  "stevearc/conform.nvim",
+  lazy = false,
   opts = {
     notify_on_error = false,
     format_on_save = function(bufnr)
@@ -13,7 +14,7 @@ return {
       }
     end,
     formatters_by_ft = {
-      lua = { 'stylua' },
+      lua = { "stylua" },
 
       -- JavaScript / TypeScript
       -- javascript = { 'prettierd' },
@@ -26,7 +27,7 @@ return {
       -- scss = { 'prettierd' },
       --
       -- Go
-      go = { 'gofumpt', 'goimports' },
+      go = { "gofumpt", "goimports" },
     },
   },
 }
