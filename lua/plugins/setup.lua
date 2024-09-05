@@ -2,6 +2,7 @@ return {
   require 'plugins.treesitter',
   require 'plugins.telescope',
   require 'plugins.cmp',
+  require 'plugins.ts_ls',
   require 'plugins.lsp',
   require 'plugins.others',
 
