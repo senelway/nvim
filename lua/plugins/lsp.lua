@@ -113,14 +113,6 @@ return { -- LSP Configuration & Plugins
     --  - settings (table): Override the default settings passed when initializing the server.
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
-      eslint = {
-        on_attach = function(_, bufnr)
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            buffer = bufnr,
-            command = 'EslintFixAll',
-          })
-        end,
-      },
       cssls = {
         settings = {
           scss = { lint = { unknownAtRules = 'ignore' } },
@@ -169,6 +161,8 @@ return { -- LSP Configuration & Plugins
       'gofumpt',
       -- -- c#
       'omnisharp',
+      -- -- frontend
+      'eslint_d',
 
       -- DAP
       'delve',
