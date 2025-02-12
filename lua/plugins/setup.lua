@@ -10,7 +10,6 @@ return {
   require("plugins.indent_blankline"),
   require("plugins.harpoon"),
   require("plugins.copilot"),
-  require("plugins.copilot_chat"),
   require("plugins.database"),
   require("plugins.comment"),
   require("plugins.conform"),
@@ -25,4 +24,5 @@ return {
   require("plugins.tests"),
   require("plugins.nvim_tree"),
   require("plugins.lint"),
+  require("plugins.avante"),
 }
