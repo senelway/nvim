@@ -25,4 +25,5 @@ return {
   require("plugins.nvim_tree"),
   require("plugins.lint"),
   require("plugins.avante"),
+  require("plugins.octo"),
 }
