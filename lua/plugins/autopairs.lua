@@ -5,5 +5,4 @@ return {
     disable_filetype = { "TelescopePrompt", "spectre_panel" },
     check_ts = true,
   },
-  dependencies = { "hrsh7th/nvim-cmp" },
 }

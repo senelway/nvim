@@ -14,7 +14,7 @@ return {
     "MunifTanjim/nui.nvim",
     --- The below dependencies are optional,
     "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-    "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+    "saghen/blink.cmp", -- autocompletion for avante commands and mentions
     "zbirenbaum/copilot.lua", -- for providers='copilot'
     {
       -- Make sure to set this up properly if you have lazy=true
