@@ -5,39 +5,31 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = "[O]pen [D]atabase viewer" }
 )
 
-local function db_completion()
-  require("cmp").setup.buffer({ sources = { { name = "vim-dadbod-completion" } } })
-end
-
 return {
   "tpope/vim-dadbod",
   cmd = { "DB", "DBUIAddConnection", "DBUI", "DBUIToggle" },
   dependencies = {
     { "kristijanhusak/vim-dadbod-ui" },
-    { "kristijanhusak/vim-dadbod-completion" },
+    { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+    { -- optional saghen/blink.cmp completion source
+      "saghen/blink.cmp",
+      opts = {
+        sources = {
+          default = { "lsp", "path", "snippets", "buffer" },
+          per_filetype = {
+            sql = { "snippets", "dadbod", "buffer" },
+          },
+          -- add vim-dadbod-completion to your completion providers
+          providers = {
+            dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+          },
+        },
+      },
+    },
   },
   init = function()
     vim.g.db_ui_save_location = vim.fn.stdpath("config") .. require("plenary.path").path.sep .. "db_ui"
     vim.g.db_ui_use_nerd_fonts = 1
     vim.g.db_ui_win_position = "right"
-  end,
-  config = function()
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = {
-        "sql",
-      },
-      command = [[setlocal omnifunc=vim_dadbod_completion#omni]],
-    })
-
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = {
-        "sql",
-        "mysql",
-        "plsql",
-      },
-      callback = function()
-        vim.schedule(db_completion)
-      end,
-    })
   end,
 }
