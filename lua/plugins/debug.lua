@@ -4,7 +4,7 @@ return {
     -- Creates a beautiful debugger UI
     "rcarriga/nvim-dap-ui",
     -- Installs the debug adapters for you
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     "jay-babu/mason-nvim-dap.nvim",
     -- Add your own debuggers here
     "leoluz/nvim-dap-go",
