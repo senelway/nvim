@@ -46,9 +46,12 @@ return {
       map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "undo stage hunk" })
       map("n", "<leader>hR", gs.reset_buffer, { desc = "git Reset buffer" })
       map("n", "<leader>hp", gs.preview_hunk, { desc = "preview git hunk" })
-      map("n", "<leader>hb", function()
+
+      map("n", "<leader>hb", gs.blame, { desc = "Git blame line full" })
+      map("n", "<leader>hB", function()
         gs.blame_line({ full = false })
       end, { desc = "git blame line" })
+
       map("n", "<leader>hd", gs.diffthis, { desc = "git diff against index" })
       map("n", "<leader>hD", function()
         gs.diffthis("~")

@@ -1,6 +1,5 @@
 return {
   "saghen/blink.cmp",
-  event = "InsertEnter",
   dependencies = {
     {
       "L3MON4D3/LuaSnip",
@@ -56,12 +55,14 @@ return {
       -- By default, you may press `<c-space>` to show the documentation.
       -- Optionally, set `auto_show = true` to show the documentation after a delay.
       documentation = { auto_show = true, auto_show_delay_ms = 500 },
+      ghost_text = { enabled = false },
     },
 
     sources = {
-      default = { "lsp", "path", "snippets", "lazydev" },
+      default = { "lsp", "path", "snippets", "lazydev", "dadbod" },
       providers = {
         lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+        dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
       },
     },
 
