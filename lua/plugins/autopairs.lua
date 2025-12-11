@@ -1,8 +1,8 @@
 return {
-  "windwp/nvim-autopairs",
-  event = "InsertEnter",
+  'windwp/nvim-autopairs',
+  event = 'InsertEnter',
   opts = {
-    disable_filetype = { "TelescopePrompt", "spectre_panel" },
+    disable_filetype = { 'TelescopePrompt', 'spectre_panel' },
     check_ts = true,
   },
 }

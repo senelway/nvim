@@ -23,7 +23,7 @@
 -- Enable recursive removal of directories in *nix systems
 -- vim.g.netrw_localrmdir = 'rm -r'
 
-vim.opt.completeopt = "menuone,noselect"
+vim.opt.completeopt = 'menuone,noselect'
 
 -- Make line numbers default
 vim.opt.number = true
@@ -35,7 +35,7 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 
 -- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = "a"
+vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in status line
 vim.opt.showmode = false
@@ -45,7 +45,7 @@ vim.opt.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-  vim.opt.clipboard = "unnamedplus"
+  vim.opt.clipboard = 'unnamedplus'
 end)
 
 -- Enable break indent
@@ -59,7 +59,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = "yes"
+vim.opt.signcolumn = 'yes'
 
 -- Decrease update time
 vim.opt.updatetime = 250
@@ -79,7 +79,7 @@ vim.opt.timeoutlen = 300
 vim.opt.tabstop = 2
 --
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = "split"
+vim.opt.inccommand = 'split'
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
@@ -92,6 +92,6 @@ vim.opt.scrolloff = 10
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 vim.opt.confirm = true
