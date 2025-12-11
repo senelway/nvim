@@ -1,10 +1,10 @@
 return {
-  "nvim-tree/nvim-tree.lua",
-  version = "*",
+  'nvim-tree/nvim-tree.lua',
+  version = '*',
   lazy = false,
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
-    require("nvim-tree").setup({
+    require('nvim-tree').setup {
       update_focused_file = {
         enable = true,
         update_root = false,
@@ -19,13 +19,13 @@ return {
         icons = {
           glyphs = {
             git = {
-              unstaged = "",
-              staged = "",
-              unmerged = "",
-              renamed = "➜",
-              untracked = "",
-              deleted = "",
-              ignored = "◌",
+              unstaged = '',
+              staged = '',
+              unmerged = '',
+              renamed = '➜',
+              untracked = '',
+              deleted = '',
+              ignored = '◌',
             },
           },
         },
@@ -34,7 +34,7 @@ return {
           enable = true,
         },
       },
-    })
-    vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { noremap = true, silent = true })
+    }
+    vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<cr>', { noremap = true, silent = true })
   end,
 }

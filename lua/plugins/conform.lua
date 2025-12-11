@@ -1,16 +1,16 @@
 return {
   -- Autoformat
-  "stevearc/conform.nvim",
-  event = { "BufWritePre" },
-  cmd = { "ConformInfo" },
+  'stevearc/conform.nvim',
+  event = { 'BufWritePre' },
+  cmd = { 'ConformInfo' },
   keys = {
     {
-      "<leader>f",
+      '<leader>f',
       function()
-        require("conform").format({ async = true, lsp_format = "fallback" })
+        require('conform').format { async = true, lsp_format = 'fallback' }
       end,
-      mode = "",
-      desc = "[F]ormat buffer",
+      mode = '',
+      desc = '[F]ormat buffer',
     },
   },
   opts = {
@@ -25,17 +25,17 @@ return {
       else
         return {
           timeout_ms = 500,
-          lsp_format = "fallback",
+          lsp_format = 'fallback',
         }
       end
     end,
     formatters_by_ft = {
-      lua = { "stylua" },
-      go = { "gofumpt", "goimports" },
+      lua = { 'stylua' },
+      go = { 'gofumpt', 'goimports' },
 
-      javascript = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
-      typescript = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
-      typescriptreact = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
+      javascript = { 'eslint_d', 'eslint', 'prettierd', 'prettier', stop_after_first = true },
+      typescript = { 'eslint_d', 'eslint', 'prettierd', 'prettier', stop_after_first = true },
+      typescriptreact = { 'eslint_d', 'eslint', 'prettierd', 'prettier', stop_after_first = true },
     },
   },
 }

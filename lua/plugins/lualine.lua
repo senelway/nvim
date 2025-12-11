@@ -1,12 +1,12 @@
 return {
-  "nvim-lualine/lualine.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  'nvim-lualine/lualine.nvim',
+  dependencies = { 'nvim-tree/nvim-web-devicons' },
   opts = {
     options = {
-      component_separators = "|",
+      component_separators = '|',
     },
     sections = {
-      lualine_c = { { "filename", path = 4 } },
+      lualine_c = { { 'filename', path = 4 } },
     },
   },
 }
