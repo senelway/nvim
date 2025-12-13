@@ -2,16 +2,23 @@ return {
   'nvim-neotest/neotest',
   event = 'VeryLazy',
   dependencies = {
+    'nvim-neotest/nvim-nio',
     'nvim-lua/plenary.nvim',
-    'nvim-treesitter/nvim-treesitter',
-    'nvim-neotest/neotest-go',
+    'antoinemadec/FixCursorHold.nvim',
+    {
+      'fredrikaverpil/neotest-golang',
+      version = '*',
+      build = function()
+        vim.system({ 'go', 'install', 'gotest.tools/gotestsum@latest' }):wait() -- Optional, but recommended
+      end,
+    },
     'marilari88/neotest-vitest',
     -- 'rouge8/neotest-rust',
   },
   config = function()
     require('neotest').setup {
       adapters = {
-        require 'neotest-go',
+        require 'neotest-golang' { runner = 'gotestsum' },
         require 'neotest-vitest',
         -- require 'neotest-rust',
       },
