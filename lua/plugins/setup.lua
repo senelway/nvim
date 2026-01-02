@@ -25,4 +25,5 @@ return {
   require 'plugins.nvim_tree',
   require 'plugins.lint',
   require 'plugins.octo',
+  require 'plugins.spoo',
 }

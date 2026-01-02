@@ -1,4 +1,4 @@
-vim.keymap.set('n', '<leader>st', ':TodoTrouble<CR>', { desc = '[S]earch [T]odo' })
+vim.keymap.set('n', '<leader>st', ':TodoTelescope<CR>', { desc = '[S]earch [T]odo' })
 
 return {
   'folke/todo-comments.nvim',
