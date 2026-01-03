@@ -76,9 +76,9 @@ local function get_current_track()
     name = name or 'Unknown',
     artist = artist or 'Unknown',
     state = state or 'stopped',
-    volume = volume or '0',
-    player_time = player_time or '0',
-    duration = track_duration or '0',
+    volume = tonumber(volume) or 0,
+    player_time = tonumber(player_time) or 0,
+    duration = tonumber(track_duration) or 0,
   }
 end
 
