@@ -1,3 +1,41 @@
+--[[
+-- Player Control:
+  'pause'
+  'playpause'
+  'next track'
+  'previous track'
+  'set player position to 30'
+
+-- Player State (GET):
+  'get player state'
+  'get player position'
+  'get sound volume'
+
+-- Player State (SET):
+  'set sound volume to 50' 
+
+-- Current Track Info (GET):
+  'get name of current track'
+  'get artist of current track'
+  'get album of current track'
+  'get duration of current track'
+  'get id of current track' 
+  'get artwork url of current track'
+  'get popularity of current track' 
+  'get spotify url of current track'
+
+-- Shuffle (GET/SET):
+  'get shuffling'
+  'set shuffling to true'
+  'set shuffling to false'
+
+-- Repeat (GET/SET):
+  'get repeating'
+  'set repeating to true'
+  'set repeating to false'
+  'set repeating to one'
+--]]
+
 local function spotify_command(cmd)
   local script = string.format(
     [[tell application "Spotify"
@@ -25,8 +63,8 @@ local function get_current_track()
 
   local name = spotify_command 'get name of current track'
   local artist = spotify_command 'get artist of current track'
-  local album = spotify_command 'get album of current track'
   local state = spotify_command 'get player state'
+  local volume = spotify_command 'get sound volume'
 
   if not name or name == '' or name:match '^%d+$' then
     return nil
@@ -35,21 +73,16 @@ local function get_current_track()
   return {
     name = name or 'Unknown',
     artist = artist or 'Unknown',
-    album = album or 'Unknown',
     state = state or 'stopped',
+    volume = volume or '0',
   }
 end
 
-local function play_pause()
-  spotify_command 'playpause'
-end
-
-local function next_track()
-  spotify_command 'next track'
-end
-
-local function previous_track()
-  spotify_command 'previous track'
+local function truncate(str, max_len)
+  if not str or #str <= max_len then
+    return str or ''
+  end
+  return str:sub(1, max_len - 3) .. '...'
 end
 
 local popup_buf = nil
@@ -67,54 +100,35 @@ local function update_popup()
   local track = get_current_track()
   if not track then
     local message = is_spotify_running() and 'No track is playing' or 'Spotify is not running'
-    local lines = {
-      '  spoo',
-      '',
-      '  ' .. message,
-      '',
-      '  Press [q] to close',
-    }
+    local lines = { ' ' .. message }
     vim.bo[popup_buf].modifiable = true
     vim.api.nvim_buf_set_lines(popup_buf, 0, -1, false, lines)
     vim.bo[popup_buf].modifiable = false
     return
   end
 
-  local function truncate(str, max_len)
-    if not str or #str <= max_len then
-      return str or ''
-    end
-    return str:sub(1, max_len - 3) .. '...'
-  end
-
+  local max_len = 50
   local state_icon = track.state == 'playing' and '▶' or '⏸'
-  local max_len = 90
   local track_name = truncate(track.name, max_len)
   local artist_name = truncate(track.artist, max_len)
-  local album_name = truncate(track.album, max_len)
-
-  local state_text = string.format('%s %s', state_icon, track.state:upper())
+  local volume = track.volume
 
   local lines = {
-    '  spoo',
-    '',
-    '  ' .. state_text,
-    '',
-    '  Track:  ' .. track_name,
-    '  Artist: ' .. artist_name,
-    '  Album:  ' .. album_name,
-    '',
-    '  Controls:',
-    '    [p] Play/Pause',
-    '    [n] Next',
-    '    [b] Previous',
-    '    [r] Refresh',
-    '    [q] Close',
+    ' ' .. state_icon,
+    ' Track : ' .. track_name,
+    ' Artist: ' .. artist_name,
+    ' Volume: ' .. volume,
   }
 
   vim.bo[popup_buf].modifiable = true
   vim.api.nvim_buf_set_lines(popup_buf, 0, -1, false, lines)
   vim.bo[popup_buf].modifiable = false
+end
+
+local function update_defer()
+  vim.schedule(function()
+    vim.defer_fn(update_popup, 300)
+  end)
 end
 
 local function create_popup()
@@ -128,8 +142,8 @@ local function create_popup()
   vim.api.nvim_buf_set_name(popup_buf, 'spoo://' .. tostring(os.time()))
   vim.bo[popup_buf].filetype = 'spotify'
 
-  local width = 100
-  local height = 15
+  local width = 70
+  local height = 4
 
   local editor_width = vim.api.nvim_get_option_value('columns', {})
   local editor_height = vim.api.nvim_get_option_value('lines', {})
@@ -151,30 +165,24 @@ local function create_popup()
 
   vim.api.nvim_buf_set_keymap(popup_buf, 'n', 'p', '', {
     callback = function()
-      play_pause()
-      vim.schedule(function()
-        vim.defer_fn(update_popup, 300)
-      end)
+      spotify_command 'playpause'
+      update_defer()
     end,
     desc = 'Play/Pause',
   })
 
   vim.api.nvim_buf_set_keymap(popup_buf, 'n', 'n', '', {
     callback = function()
-      next_track()
-      vim.schedule(function()
-        vim.defer_fn(update_popup, 300)
-      end)
+      spotify_command 'next track'
+      update_defer()
     end,
     desc = 'Next track',
   })
 
   vim.api.nvim_buf_set_keymap(popup_buf, 'n', 'b', '', {
     callback = function()
-      previous_track()
-      vim.schedule(function()
-        vim.defer_fn(update_popup, 300)
-      end)
+      spotify_command 'previous track'
+      update_defer()
     end,
     desc = 'Previous track',
   })
@@ -182,6 +190,22 @@ local function create_popup()
   vim.api.nvim_buf_set_keymap(popup_buf, 'n', 'r', '', {
     callback = update_popup,
     desc = 'Refresh',
+  })
+
+  vim.api.nvim_buf_set_keymap(popup_buf, 'n', '+', '', {
+    callback = function()
+      spotify_command 'set sound volume to (get sound volume + 5)'
+      update_defer()
+    end,
+    desc = 'Volume Up',
+  })
+
+  vim.api.nvim_buf_set_keymap(popup_buf, 'n', '-', '', {
+    callback = function()
+      spotify_command 'set sound volume to (get sound volume - 5)'
+      update_defer()
+    end,
+    desc = 'Volume Down',
   })
 
   vim.api.nvim_buf_set_keymap(popup_buf, 'n', 'q', '', {
@@ -214,6 +238,6 @@ local function toggle_popup()
   end
 end
 
-vim.keymap.set('n', '<leader>si', toggle_popup, { desc = '[S]potify [I] popup' })
+vim.keymap.set('n', '<leader>si', toggle_popup, { desc = '[S]poo [I] popup' })
 
 return {}
