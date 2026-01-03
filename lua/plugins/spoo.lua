@@ -136,6 +136,14 @@ local function update_defer()
   end)
 end
 
+local function terminate()
+  if popup_buf and vim.api.nvim_buf_is_valid(popup_buf) then
+    vim.api.nvim_buf_delete(popup_buf, { force = true })
+  end
+  popup_win = nil
+  popup_buf = nil
+end
+
 local function create_popup()
   if popup_win and vim.api.nvim_win_is_valid(popup_win) then
     vim.api.nvim_set_current_win(popup_win)
@@ -147,7 +155,7 @@ local function create_popup()
   vim.api.nvim_buf_set_name(popup_buf, 'spoo://' .. tostring(os.time()))
   vim.bo[popup_buf].filetype = 'spotify'
 
-  local width = 70
+  local width = 60
   local height = 3
 
   local editor_width = vim.api.nvim_get_option_value('columns', {})
@@ -162,7 +170,9 @@ local function create_popup()
     height = height,
     col = col,
     row = row,
+    title = ' Spoo ',
     style = 'minimal',
+    title_pos = 'center',
     border = 'rounded',
   })
 
@@ -229,11 +239,7 @@ local function create_popup()
       if popup_win and vim.api.nvim_win_is_valid(popup_win) then
         vim.api.nvim_win_close(popup_win, true)
       end
-      if popup_buf and vim.api.nvim_buf_is_valid(popup_buf) then
-        vim.api.nvim_buf_delete(popup_buf, { force = true })
-      end
-      popup_win = nil
-      popup_buf = nil
+      terminate()
     end,
     desc = 'Close',
   })
@@ -244,11 +250,7 @@ end
 local function toggle_popup()
   if popup_win and vim.api.nvim_win_is_valid(popup_win) then
     vim.api.nvim_win_close(popup_win, true)
-    if popup_buf and vim.api.nvim_buf_is_valid(popup_buf) then
-      vim.api.nvim_buf_delete(popup_buf, { force = true })
-    end
-    popup_win = nil
-    popup_buf = nil
+    terminate()
   else
     create_popup()
   end
