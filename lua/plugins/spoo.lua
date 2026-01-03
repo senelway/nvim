@@ -65,6 +65,8 @@ local function get_current_track()
   local artist = spotify_command 'get artist of current track'
   local state = spotify_command 'get player state'
   local volume = spotify_command 'get sound volume'
+  local player_time = spotify_command 'get player position'
+  local track_duration = spotify_command 'get duration of current track'
 
   if not name or name == '' or name:match '^%d+$' then
     return nil
@@ -75,6 +77,8 @@ local function get_current_track()
     artist = artist or 'Unknown',
     state = state or 'stopped',
     volume = volume or '0',
+    player_time = player_time or '0',
+    duration = track_duration or '0',
   }
 end
 
@@ -111,13 +115,14 @@ local function update_popup()
   local state_icon = track.state == 'playing' and '▶' or '⏸'
   local track_name = truncate(track.name, max_len)
   local artist_name = truncate(track.artist, max_len)
-  local volume = track.volume
+
+  local player_time = string.format('%.2d:%.2d', math.floor(track.player_time / 60), math.floor(track.player_time % 60))
+  local duration = string.format('%02d:%02d', math.floor((track.duration / 1000) / 60), (track.duration / 1000) % 60)
 
   local lines = {
-    ' ' .. state_icon,
-    ' Track : ' .. track_name,
-    ' Artist: ' .. artist_name,
-    ' Volume: ' .. volume,
+    ' ' .. state_icon .. ' ' .. artist_name .. ' - ' .. track_name,
+    ' Duration: ' .. player_time .. ' / ' .. duration,
+    ' Volume: ' .. track.volume,
   }
 
   vim.bo[popup_buf].modifiable = true
@@ -143,7 +148,7 @@ local function create_popup()
   vim.bo[popup_buf].filetype = 'spotify'
 
   local width = 70
-  local height = 4
+  local height = 3
 
   local editor_width = vim.api.nvim_get_option_value('columns', {})
   local editor_height = vim.api.nvim_get_option_value('lines', {})
@@ -188,8 +193,19 @@ local function create_popup()
   })
 
   vim.api.nvim_buf_set_keymap(popup_buf, 'n', 'r', '', {
-    callback = update_popup,
+    callback = update_defer,
     desc = 'Refresh',
+  })
+
+  vim.api.nvim_buf_set_keymap(popup_buf, 'n', 'c', '', {
+    callback = function()
+      local track = get_current_track()
+      if track then
+        local url = spotify_command 'get spotify url of current track'
+        vim.fn.setreg('+', url or 'error getting url')
+      end
+    end,
+    desc = 'Copy Track URL',
   })
 
   vim.api.nvim_buf_set_keymap(popup_buf, 'n', '+', '', {
