@@ -15,7 +15,7 @@ return {
   build = ':TSUpdate',
   branch = 'main',
   config = function()
-    local parsers = { 'go', 'lua', 'tsx', 'typescript', 'html', 'css', 'scss', 'sql', 'markdown', 'json', 'http', 'c_sharp' }
+    local parsers = { 'go', 'lua', 'tsx', 'typescript', 'html', 'css', 'scss', 'sql', 'markdown', 'json', 'http', 'c_sharp', 'svelte' }
     require('nvim-treesitter').install(parsers)
 
     vim.api.nvim_create_autocmd('FileType', {

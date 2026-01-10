@@ -13,6 +13,7 @@ return {
       end,
     },
     'marilari88/neotest-vitest',
+    'Issafalcon/neotest-dotnet',
     -- 'rouge8/neotest-rust',
   },
   config = function()
@@ -20,6 +21,7 @@ return {
       adapters = {
         require 'neotest-golang' { runner = 'gotestsum' },
         require 'neotest-vitest',
+        require 'neotest-dotnet',
         -- require 'neotest-rust',
       },
     }
