@@ -74,6 +74,14 @@ return {
       end,
       desc = 'Git Log File',
     },
+    {
+      'gr',
+      function()
+        Snacks.picker.lsp_references()
+      end,
+      nowait = true,
+      desc = 'References',
+    },
 
     -- UTILS
     {
