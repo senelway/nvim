@@ -14,7 +14,7 @@ return {
         style = 'float',
         relative = 'editor',
         width = 0.5,
-        height = 0.3,
+        height = 0.4,
         border = 'rounded',
         backdrop = 80,
       },
