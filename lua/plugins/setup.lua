@@ -1,6 +1,5 @@
 return {
   require 'plugins.treesitter',
-  require 'plugins.telescope',
   require 'plugins.cmp',
   require 'plugins.ts_ls',
   require 'plugins.lsp',
@@ -13,7 +12,6 @@ return {
   require 'plugins.database',
   require 'plugins.comment',
   require 'plugins.conform',
-  require 'plugins.term',
   require 'plugins.gitsigns',
   require 'plugins.autopairs',
   require 'plugins.trouble',
@@ -22,8 +20,9 @@ return {
   require 'plugins.mini',
   require 'plugins.debug',
   require 'plugins.tests',
-  require 'plugins.nvim_tree',
   require 'plugins.lint',
-  require 'plugins.octo',
   require 'plugins.spoo',
+
+  require 'plugins.snacks',
+  require 'plugins.claude',
 }
