@@ -19,6 +19,7 @@ return {
         backdrop = 80,
       },
     },
+    gitbrowse = {},
     dashboard = {},
   },
   keys = {
@@ -30,7 +31,13 @@ return {
       end,
       desc = 'GitHub Pull Requests (open)',
     },
-
+    {
+      '<leader>go',
+      function()
+        Snacks.gitbrowse.open()
+      end,
+      desc = 'Github open',
+    },
     -- GH BALEM
     {
       '<leader>gb',
@@ -106,6 +113,13 @@ return {
       desc = 'Find Files',
     },
     {
+      '<leader>su',
+      function()
+        Snacks.picker.undo()
+      end,
+      desc = 'Undo History',
+    },
+    {
       '<leader>sa',
       function()
         Snacks.picker.files { ignore = true, hidden = true }
@@ -140,7 +154,6 @@ return {
       '<leader>i',
       function()
         Snacks.terminal()
-        vim.keymap.set('t', 'jk', '<C-\\><C-n>', { nowait = true })
       end,
       desc = 'Floating Terminal',
     },

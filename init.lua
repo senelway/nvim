@@ -61,5 +61,4 @@ require('lazy').setup(require 'plugins.setup', {
   },
 })
 ---
-require 'tools.github'
 require 'tools.yank'
