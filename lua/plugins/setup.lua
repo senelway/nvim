@@ -21,8 +21,8 @@ return {
   require 'plugins.debug',
   require 'plugins.tests',
   require 'plugins.lint',
-  require 'plugins.spoo',
 
   require 'plugins.snacks',
+  require 'plugins.spoo',
   require 'plugins.claude',
 }
