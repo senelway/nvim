@@ -3,6 +3,8 @@ return {
   require 'plugins.cmp',
   require 'plugins.ts_ls',
   require 'plugins.lsp',
+  require 'plugins.snacks',
+
   require 'plugins.others',
 
   require 'plugins.theme',
@@ -15,14 +17,13 @@ return {
   require 'plugins.gitsigns',
   require 'plugins.autopairs',
   require 'plugins.trouble',
-  require 'plugins.todo',
   require 'plugins.lualine',
   require 'plugins.mini',
   require 'plugins.debug',
   require 'plugins.tests',
   require 'plugins.lint',
 
-  require 'plugins.snacks',
   require 'plugins.spoo',
   require 'plugins.claude',
+  require 'plugins.cursor',
 }
