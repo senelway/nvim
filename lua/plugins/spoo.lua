@@ -82,169 +82,89 @@ local function get_current_track()
   }
 end
 
-local function truncate(str, max_len)
-  if not str or #str <= max_len then
-    return str or ''
-  end
-  return str:sub(1, max_len - 3) .. '...'
-end
-
-local popup_win = nil
-
-local function update_popup()
-  if not popup_win then
-    return
-  end
-
-  local win_id = popup_win.win
-  if not win_id or not vim.api.nvim_win_is_valid(win_id) then
-    return
-  end
-
+local function show_menu()
   local track = get_current_track()
-  local lines = {}
+  local is_running = is_spotify_running()
+  local notifications_running = notification_timer ~= nil
 
-  if not track then
-    local message = is_spotify_running() and 'No track is playing' or 'Spotify is not running'
-    lines = { ' ' .. message }
+  -- Build status header
+  local status_lines = {}
+  if not is_running then
+    table.insert(status_lines, '❌ Spotify is not running')
+  elseif not track then
+    table.insert(status_lines, '⏸ No track playing')
   else
-    local max_len = 50
     local state_icon = track.state == 'playing' and '▶' or '⏸'
-    local track_name = truncate(track.name, max_len)
-    local artist_name = truncate(track.artist, max_len)
-
-    local player_time = string.format('%.2d:%.2d', math.floor(track.player_time / 60), math.floor(track.player_time % 60))
     local duration = string.format('%02d:%02d', math.floor((track.duration / 1000) / 60), (track.duration / 1000) % 60)
+    local current_time = string.format('%02d:%02d', math.floor(track.player_time / 60), math.floor(track.player_time % 60))
 
-    lines = {
-      ' ' .. state_icon .. ' ' .. artist_name .. ' - ' .. track_name,
-      ' Duration: ' .. player_time .. ' / ' .. duration,
-      ' Volume: ' .. track.volume,
-    }
+    table.insert(status_lines, state_icon .. ' ' .. track.name)
+    table.insert(status_lines, '   ' .. track.artist)
+    table.insert(status_lines, '   ' .. current_time .. ' / ' .. duration .. ' | Vol: ' .. track.volume)
   end
 
-  local buf = popup_win.buf
-  if buf and vim.api.nvim_buf_is_valid(buf) then
-    vim.bo[buf].modifiable = true
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-    vim.bo[buf].modifiable = false
-  end
-end
+  local notif_status = notifications_running and '✓ ON' or '✗ OFF'
+  table.insert(status_lines, '🔔 Notifications: ' .. notif_status)
 
-local function update_defer()
-  vim.schedule(function()
-    vim.defer_fn(update_popup, 300)
+  -- Menu options
+  local options = {
+    {
+      display = '⏯  Play/Pause',
+      action = function()
+        spotify_command 'playpause'
+      end,
+    },
+    {
+      display = '⏭  Next Track',
+      action = function()
+        spotify_command 'next track'
+      end,
+    },
+    {
+      display = '⏮  Previous Track',
+      action = function()
+        spotify_command 'previous track'
+      end,
+    },
+    {
+      display = '🔊 Volume Up (+5)',
+      action = function()
+        spotify_command 'set sound volume to (get sound volume + 5)'
+      end,
+    },
+    {
+      display = '🔉 Volume Down (-5)',
+      action = function()
+        spotify_command 'set sound volume to (get sound volume - 5)'
+      end,
+    },
+    {
+      display = '📋 Copy Track URL',
+      action = function()
+        local url = spotify_command 'get spotify url of current track'
+        vim.fn.setreg('+', url or 'error getting url')
+        ---@type fun(msg: string|string[], opts: snacks.notify.Opts)
+        Snacks.notify('Copied to clipboard', { title = '🎵 Spoo', level = 'info' })
+      end,
+    },
+  }
+
+  -- Build prompt with status
+  local prompt = table.concat(status_lines, '\n')
+
+  -- Show menu with vim.ui.select
+  vim.ui.select(options, {
+    prompt = prompt,
+    format_item = function(item)
+      return item.display
+    end,
+  }, function(choice)
+    if choice and choice.action then
+      choice.action()
+    end
   end)
 end
 
-local function create_popup()
-  if popup_win then
-    local win_id = popup_win.win
-    if win_id and vim.api.nvim_win_is_valid(win_id) then
-      vim.api.nvim_set_current_win(win_id)
-      update_popup()
-      return
-    end
-  end
-
-  popup_win = Snacks.win {
-    style = 'float',
-    relative = 'editor',
-    width = 60,
-    height = 3,
-    title = ' Spoo ',
-    title_pos = 'center',
-    border = 'rounded',
-    enter = true,
-    backdrop = 80,
-  }
-
-  local buf = popup_win.buf
-  vim.bo[buf].filetype = 'spotify'
-  vim.bo[buf].modifiable = false
-
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'p', '', {
-    callback = function()
-      spotify_command 'playpause'
-      update_defer()
-    end,
-    desc = 'Play/Pause',
-  })
-
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'n', '', {
-    callback = function()
-      spotify_command 'next track'
-      update_defer()
-    end,
-    desc = 'Next track',
-  })
-
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'b', '', {
-    callback = function()
-      spotify_command 'previous track'
-      update_defer()
-    end,
-    desc = 'Previous track',
-  })
-
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'r', '', {
-    callback = update_defer,
-    desc = 'Refresh',
-  })
-
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'c', '', {
-    callback = function()
-      local track = get_current_track()
-      if track then
-        local url = spotify_command 'get spotify url of current track'
-        vim.fn.setreg('+', url or 'error getting url')
-      end
-    end,
-    desc = 'Copy Track URL',
-  })
-
-  vim.api.nvim_buf_set_keymap(buf, 'n', '+', '', {
-    callback = function()
-      spotify_command 'set sound volume to (get sound volume + 5)'
-      update_defer()
-    end,
-    desc = 'Volume Up',
-  })
-
-  vim.api.nvim_buf_set_keymap(buf, 'n', '-', '', {
-    callback = function()
-      spotify_command 'set sound volume to (get sound volume - 5)'
-      update_defer()
-    end,
-    desc = 'Volume Down',
-  })
-
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'q', '', {
-    callback = function()
-      popup_win:close()
-      popup_win = nil
-    end,
-    desc = 'Close',
-  })
-
-  update_popup()
-end
-
-local function toggle_popup()
-  if popup_win then
-    local win_id = popup_win.win
-    if win_id and vim.api.nvim_win_is_valid(win_id) then
-      popup_win:close()
-      popup_win = nil
-    else
-      popup_win = nil
-      create_popup()
-    end
-  else
-    create_popup()
-  end
-end
-
-vim.keymap.set('n', '<leader>si', toggle_popup, { desc = '[S]poo [I] popup' })
-
+-- Keymaps
+vim.keymap.set('n', '<leader>mo', show_menu, { desc = '[M]usic c[O]ntrol menu' })
 return {}

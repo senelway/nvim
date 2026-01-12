@@ -4,6 +4,17 @@ return {
   lazy = false,
   ---@type snacks.Config
   opts = {
+    bigfile = { enabled = false },
+    dashboard = { enabled = false },
+    indent = { enabled = false },
+    input = { enabled = false },
+    scope = { enabled = false },
+    scroll = { enabled = false },
+    statuscolumn = { enabled = false },
+
+    words = { enabled = true },
+    notifier = { enabled = true },
+    quickfile = { enabled = true },
     explorer = {
       auto_close = true,
       replace_netrw = true,
@@ -20,12 +31,40 @@ return {
       },
     },
     gitbrowse = {},
-    dashboard = {},
+    picker = {
+      win = {
+        list = {
+          width = 0.2,
+        },
+      },
+    },
   },
   keys = {
+    {
+      '<leader>pm',
+      function()
+        Snacks.picker()
+      end,
+      desc = 'GitHub Picker',
+    },
+
     -- GH CLIENT
     {
-      '<leader>gp',
+      '<leader>g1',
+      function()
+        Snacks.picker.gh_issue { state = 'open', assignee = '@me', repo = 'bidease/tasks' }
+      end,
+      desc = 'GitHub Issues (open)',
+    },
+    {
+      '<leader>g2',
+      function()
+        Snacks.picker.gh_issue { state = 'open', assignee = '@me', repo = 'bidease/adex-tasks' }
+      end,
+      desc = 'GitHub Issues (open)',
+    },
+    {
+      '<leader>g3',
       function()
         Snacks.picker.gh_pr()
       end,
@@ -40,40 +79,42 @@ return {
     },
     -- GH BALEM
     {
-      '<leader>gb',
+      '<leader>g0',
       function()
         Snacks.picker.git_branches()
       end,
       desc = 'Git Branches',
     },
     {
-      '<leader>gl',
+      '<leader>g9',
       function()
-        Snacks.picker.git_log()
+        Snacks.picker.git_log_file()
       end,
-      desc = 'Git Log',
+      desc = 'Git Log File',
     },
     {
-      '<leader>gL',
-      function()
-        Snacks.picker.git_log_line()
-      end,
-      desc = 'Git Log Line',
-    },
-    {
-      '<leader>gs',
+      '<leader>g-',
       function()
         Snacks.picker.git_status()
       end,
       desc = 'Git Status',
     },
     {
-      '<leader>gf',
+      '<leader>g0',
       function()
-        Snacks.picker.git_log_file()
+        Snacks.picker.git_diff()
       end,
-      desc = 'Git Log File',
+      desc = 'Git Diff (Hunks)',
     },
+    {
+      '<leader>g=',
+      function()
+        Snacks.picker.git_log()
+      end,
+      desc = 'Git Log',
+    },
+    -- GIT
+    -- UTILS
     {
       'gr',
       function()
@@ -82,8 +123,22 @@ return {
       nowait = true,
       desc = 'References',
     },
-
-    -- UTILS
+    {
+      ']]',
+      function()
+        Snacks.words.jump(vim.v.count1)
+      end,
+      desc = 'Next Reference',
+      mode = { 'n', 't' },
+    },
+    {
+      '[[',
+      function()
+        Snacks.words.jump(-vim.v.count1)
+      end,
+      desc = 'Prev Reference',
+      mode = { 'n', 't' },
+    },
     {
       '<leader>z',
       function()
@@ -173,4 +228,29 @@ return {
       desc = 'Classic Terminal',
     },
   },
+  init = function()
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'VeryLazy',
+      callback = function()
+        _G.dd = function(...)
+          Snacks.debug.inspect(...)
+        end
+        _G.bt = function()
+          Snacks.debug.backtrace()
+        end
+
+        if vim.fn.has 'nvim-0.11' == 1 then
+          vim._print = function(_, ...)
+            dd(...)
+          end
+        else
+          vim.print = _G.dd
+        end
+
+        Snacks.toggle.option('spell', { name = 'Spelling' }):map '<leader>us'
+        Snacks.toggle.inlay_hints():map '<leader>uh'
+        Snacks.toggle.dim():map '<leader>ff'
+      end,
+    })
+  end,
 }

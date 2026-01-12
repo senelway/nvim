@@ -1,9 +1,21 @@
-vim.keymap.set('n', '<leader>ott', function()
-  require('trouble').toggle 'workspace_diagnostics'
-end, { desc = '[T]rouble workspace diagnostic' })
-
 return {
   'folke/trouble.nvim',
-  event = 'InsertEnter',
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  optional = true,
+  specs = {
+    'folke/snacks.nvim',
+    opts = function(_, opts)
+      return vim.tbl_deep_extend('force', opts or {}, {
+        picker = {
+          actions = require('trouble.sources.snacks').actions,
+          win = {
+            input = {
+              keys = {
+                ['<leader>td'] = { 'trouble_open', mode = { 'n', 'i' } },
+              },
+            },
+          },
+        },
+      })
+    end,
+  },
 }
