@@ -139,13 +139,6 @@ return {
       desc = 'Prev Reference',
       mode = { 'n', 't' },
     },
-    {
-      '<leader>z',
-      function()
-        Snacks.zen()
-      end,
-      desc = 'Toggle Zen Mode',
-    },
     -- FINDER
     {
       '<leader>sb',
@@ -247,9 +240,10 @@ return {
           vim.print = _G.dd
         end
 
-        Snacks.toggle.option('spell', { name = 'Spelling' }):map '<leader>us'
-        Snacks.toggle.inlay_hints():map '<leader>uh'
-        Snacks.toggle.dim():map '<leader>ff'
+        Snacks.toggle.option('spell', { name = 'Spelling' }):map '<leader>fs'
+        Snacks.toggle.inlay_hints():map '<leader>fh'
+        Snacks.toggle.zen():map '<leader>fz'
+        Snacks.toggle.dim():map '<leader>fd'
       end,
     })
   end,
