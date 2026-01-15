@@ -15,11 +15,24 @@ return {
     words = { enabled = true },
     notifier = { enabled = true },
     quickfile = { enabled = true },
+
     explorer = {
       auto_close = true,
       replace_netrw = true,
       trash = true,
     },
+
+    scratch = {
+      ft = 'markdown',
+      win = {
+        width = 150,
+        height = 25,
+        minimal = true,
+        footer_keys = false,
+        border = true,
+      },
+    },
+
     terminal = {
       win = {
         style = 'float',
@@ -32,9 +45,10 @@ return {
     },
     gitbrowse = {},
     picker = {
-      win = {
-        list = {
-          width = 0.2,
+      hidden = true,
+      sources = {
+        files = {
+          hidden = true,
         },
       },
     },
@@ -79,7 +93,7 @@ return {
     },
     -- GH BALEM
     {
-      '<leader>g0',
+      '<leader>g8',
       function()
         Snacks.picker.git_branches()
       end,
@@ -178,7 +192,7 @@ return {
     {
       '<leader>sa',
       function()
-        Snacks.picker.files { ignore = true, hidden = true }
+        Snacks.picker.files { ignored = true, hidden = true }
       end,
       desc = 'Find All Files',
     },
@@ -196,6 +210,13 @@ return {
         Snacks.picker.grep()
       end,
       desc = 'Grep',
+    },
+    {
+      '<leader>sr',
+      function()
+        Snacks.picker.resume()
+      end,
+      desc = 'Resume Last Picker',
     },
     -- explorer
     {
@@ -219,6 +240,27 @@ return {
         vim.cmd 'terminal'
       end,
       desc = 'Classic Terminal',
+    },
+    {
+      '<leader>.',
+      function()
+        Snacks.scratch()
+      end,
+      desc = 'Toggle Scratch Buffer',
+    },
+    {
+      '<leader>,',
+      function()
+        Snacks.scratch.select()
+      end,
+      desc = 'Select Scratch Buffer',
+    },
+    {
+      '<leader>bd',
+      function()
+        Snacks.bufdelete()
+      end,
+      desc = 'Delete Buffer',
     },
   },
   init = function()

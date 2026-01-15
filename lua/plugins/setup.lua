@@ -25,5 +25,4 @@ return {
 
   require 'plugins.spoo',
   require 'plugins.claude',
-  require 'plugins.cursor',
 }

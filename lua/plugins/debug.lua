@@ -55,7 +55,10 @@ return {
 
     -- Install golang specific config
     require('dap-go').setup()
-    -- TODO:: causes log error on first run if not installed
-    require('nvim-dap-virtual-text').setup()
+
+    local ok, virtual_text = pcall(require, 'nvim-dap-virtual-text')
+    if ok then
+      virtual_text.setup()
+    end
   end,
 }

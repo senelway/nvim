@@ -55,7 +55,7 @@ vim.keymap.set('i', '<C-h>', '<Left>', { desc = 'Move left' })
 -- sort
 vim.keymap.set('v', 'gsn', ':sort<CR>', { desc = '[S]ort [N]ormal' })
 vim.keymap.set('v', 'gsi', ':sort i<CR>', { desc = '[S]ort [I]gnore case' })
-vim.keymap.set('v', 'gsu', ':sort u<CR>', { desc = '[S]ort Remove dupclitaes' })
+vim.keymap.set('v', 'gsu', ':sort u<CR>', { desc = '[S]ort Remove duplicates' })
 
 -- quick fix
 vim.keymap.set('n', ']q', ':cnext<CR>zz', { desc = 'Forward qfixlist' })

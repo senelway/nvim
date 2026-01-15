@@ -85,7 +85,6 @@ end
 local function show_menu()
   local track = get_current_track()
   local is_running = is_spotify_running()
-  local notifications_running = notification_timer ~= nil
 
   -- Build status header
   local status_lines = {}
@@ -102,9 +101,6 @@ local function show_menu()
     table.insert(status_lines, '   ' .. track.artist)
     table.insert(status_lines, '   ' .. current_time .. ' / ' .. duration .. ' | Vol: ' .. track.volume)
   end
-
-  local notif_status = notifications_running and '✓ ON' or '✗ OFF'
-  table.insert(status_lines, '🔔 Notifications: ' .. notif_status)
 
   -- Menu options
   local options = {
