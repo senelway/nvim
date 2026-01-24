@@ -205,7 +205,7 @@ return { -- LSP Configuration & Plugins
       -- LINT
       'jsonlint',
       'golangci-lint',
-      'yamllint',
+      -- 'yamllint',
       'htmlhint',
 
       -- LSP

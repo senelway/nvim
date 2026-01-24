@@ -1,20 +1,8 @@
 return {
   'saghen/blink.cmp',
-  dependencies = {
-    {
-      'L3MON4D3/LuaSnip',
-      version = '2.*',
-      build = (function()
-        if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-          return
-        end
-        return 'make install_jsregexp'
-      end)(),
-      dependencies = {},
-      opts = {},
-    },
-    'folke/lazydev.nvim',
-  },
+  version = '1.*',
+
+  dependencies = { 'rafamadriz/friendly-snippets', 'folke/lazydev.nvim' },
   --- @module 'blink.cmp'
   --- @type blink.cmp.Config
   opts = {
@@ -68,8 +56,6 @@ return {
       },
     },
 
-    snippets = { preset = 'luasnip' },
-
     -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
     -- which automatically downloads a prebuilt binary when enabled.
     --
@@ -77,7 +63,7 @@ return {
     -- the rust implementation via `'prefer_rust_with_warning'`
     --
     -- See :h blink-cmp-config-fuzzy for more information
-    fuzzy = { implementation = 'lua' },
+    fuzzy = { implementation = 'prefer_rust_with_warning' },
 
     -- Shows a signature help window while you type arguments for a function
     signature = { enabled = true },
