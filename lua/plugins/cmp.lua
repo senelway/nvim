@@ -49,7 +49,7 @@ return {
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'lazydev', 'dadbod' },
+      default = { 'lsp', 'path', 'snippets', 'lazydev', 'dadbod', 'buffer' },
       providers = {
         lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
         dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
@@ -68,4 +68,5 @@ return {
     -- Shows a signature help window while you type arguments for a function
     signature = { enabled = true },
   },
+  opts_extend = { 'sources.default' },
 }
