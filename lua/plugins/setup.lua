@@ -5,7 +5,7 @@ return {
   require 'plugins.lsp',
   require 'plugins.snacks',
 
-  require 'plugins.others',
+  require 'plugins.guess_indent',
 
   require 'plugins.theme',
   require 'plugins.indent_blankline',
@@ -25,4 +25,5 @@ return {
 
   require 'plugins.spoo',
   require 'plugins.claude',
+  require 'plugins.devdocs',
 }

@@ -12,16 +12,16 @@
   'get sound volume'
 
 -- Player State (SET):
-  'set sound volume to 50' 
+  'set sound volume to 50'
 
 -- Current Track Info (GET):
   'get name of current track'
   'get artist of current track'
   'get album of current track'
   'get duration of current track'
-  'get id of current track' 
+  'get id of current track'
   'get artwork url of current track'
-  'get popularity of current track' 
+  'get popularity of current track'
   'get spotify url of current track'
 
 -- Shuffle (GET/SET):
@@ -52,7 +52,7 @@ local function spotify_command(cmd)
 end
 
 local function is_spotify_running()
-  local result = vim.fn.system { 'pgrep', '-x', 'Spotify' }
+  vim.fn.system { 'pgrep', '-x', 'Spotify' }
   return vim.v.shell_error == 0
 end
 
@@ -145,10 +145,8 @@ local function show_menu()
     },
   }
 
-  -- Build prompt with status
   local prompt = table.concat(status_lines, '\n')
 
-  -- Show menu with vim.ui.select
   vim.ui.select(options, {
     prompt = prompt,
     format_item = function(item)
@@ -161,6 +159,5 @@ local function show_menu()
   end)
 end
 
--- Keymaps
 vim.keymap.set('n', '<leader>mo', show_menu, { desc = '[M]usic c[O]ntrol menu' })
 return {}

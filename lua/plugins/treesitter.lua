@@ -11,9 +11,9 @@ end
 
 return {
   'nvim-treesitter/nvim-treesitter',
+  -- event = { 'BufReadPost', 'BufNewFile' },
   lazy = false,
   build = ':TSUpdate',
-  branch = 'main',
   config = function()
     local parsers = { 'go', 'lua', 'tsx', 'typescript', 'html', 'css', 'scss', 'sql', 'markdown', 'json', 'http', 'c_sharp', 'svelte' }
     require('nvim-treesitter').install(parsers)

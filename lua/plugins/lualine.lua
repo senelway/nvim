@@ -1,12 +1,13 @@
 return {
   'nvim-lualine/lualine.nvim',
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  dependencies = { 'nvim-mini/mini.icons', 'folke/trouble.nvim', 'rcarriga/nvim-dap-ui' },
   opts = {
+    extensions = { 'trouble', 'nvim-dap-ui' },
     options = {
       component_separators = '|',
     },
     sections = {
-      lualine_c = { { 'filename', path = 4 } },
+      lualine_c = { { 'filename', path = 1 } },
     },
   },
 }

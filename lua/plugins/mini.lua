@@ -1,5 +1,6 @@
 return {
-  'echasnovski/mini.nvim',
+  'nvim-mini/mini.nvim',
+  version = false,
   config = function()
     -- Better Around/Inside textobjects
     --
@@ -8,6 +9,9 @@ return {
     --  - yinq - [Y]ank [I]nside [N]ext [']quote
     --  - ci'  - [C]hange [I]nside [']quote
     require('mini.ai').setup { n_lines = 300 }
+
+    require('mini.icons').setup()
+    require('mini.trailspace').setup()
 
     -- Add/delete/replace surroundings (brackets, quotes, etc.)
     --
