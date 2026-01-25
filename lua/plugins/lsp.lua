@@ -196,8 +196,6 @@ return { -- LSP Configuration & Plugins
       'gofumpt',
       -- -- c#
       'omnisharp',
-      -- -- frontend
-      'eslint_d',
 
       -- DAP
       'delve',
@@ -205,7 +203,6 @@ return { -- LSP Configuration & Plugins
       -- LINT
       'jsonlint',
       'golangci-lint',
-      -- 'yamllint',
       'htmlhint',
 
       -- LSP

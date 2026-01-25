@@ -32,10 +32,9 @@ return {
     formatters_by_ft = {
       lua = { 'stylua' },
       go = { 'gofumpt', 'goimports' },
-
-      javascript = { 'eslint_d', 'eslint', 'prettierd', 'prettier', stop_after_first = true },
-      typescript = { 'eslint_d', 'eslint', 'prettierd', 'prettier', stop_after_first = true },
-      typescriptreact = { 'eslint_d', 'eslint', 'prettierd', 'prettier', stop_after_first = true },
+      -- javascript = { 'prettierd', stop_after_first = true },
+      -- typescript = { 'prettierd', stop_after_first = true },
+      -- typescriptreact = { 'prettierd', stop_after_first = true },
     },
   },
 }
