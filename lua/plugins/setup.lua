@@ -26,4 +26,5 @@ return {
   require 'plugins.spoo',
   require 'plugins.claude',
   require 'plugins.devdocs',
+  require 'plugins.markdown',
 }
