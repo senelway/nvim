@@ -15,6 +15,7 @@ return {
   require 'plugins.comment',
   require 'plugins.conform',
   require 'plugins.gitsigns',
+  require 'plugins.diffview',
   require 'plugins.autopairs',
   require 'plugins.trouble',
   require 'plugins.lualine',

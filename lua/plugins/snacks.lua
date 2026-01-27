@@ -85,11 +85,23 @@ return {
       desc = 'GitHub Pull Requests (open)',
     },
     {
-      '<leader>go',
+      '<leader>gof',
       function()
         Snacks.gitbrowse.open()
       end,
       desc = 'Github open',
+    },
+    {
+      '<leader>goc',
+      function()
+        Snacks.gitbrowse.open {
+          open = function(url)
+            vim.fn.setreg('+', url)
+            Snacks.notify.info('Copied: ' .. url)
+          end,
+        }
+      end,
+      desc = 'Copy GitHub URL',
     },
     -- GH BALEM
     {
