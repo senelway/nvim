@@ -9,7 +9,6 @@ return {
 
   require 'plugins.theme',
   require 'plugins.indent_blankline',
-  require 'plugins.harpoon',
   require 'plugins.copilot',
   require 'plugins.database',
   require 'plugins.comment',
