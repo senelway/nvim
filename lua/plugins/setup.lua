@@ -15,7 +15,6 @@ return {
   require 'plugins.comment',
   require 'plugins.conform',
   require 'plugins.gitsigns',
-  require 'plugins.diffview',
   require 'plugins.autopairs',
   require 'plugins.trouble',
   require 'plugins.lualine',
@@ -28,4 +27,5 @@ return {
   require 'plugins.claude',
   require 'plugins.devdocs',
   require 'plugins.markdown',
+  require 'plugins.vinote',
 }

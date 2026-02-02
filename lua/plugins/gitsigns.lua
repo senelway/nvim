@@ -1,3 +1,5 @@
+vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = 'Git Status' })
+
 return {
   'lewis6991/gitsigns.nvim',
   event = { 'BufReadPost', 'BufNewFile' },
@@ -31,5 +33,9 @@ return {
       -- Preview hunk
       map('n', '<leader>gd', gs.preview_hunk_inline, { desc = 'Preview hunk inline' })
     end,
+  },
+  {
+    'tpope/vim-fugitive',
+    cmd = { 'Git' },
   },
 }
