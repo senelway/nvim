@@ -14,7 +14,7 @@ return {
   require 'plugins.database',
   require 'plugins.comment',
   require 'plugins.conform',
-  require 'plugins.gitsigns',
+  require 'plugins.git',
   require 'plugins.autopairs',
   require 'plugins.trouble',
   require 'plugins.lualine',
