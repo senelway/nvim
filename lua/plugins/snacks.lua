@@ -254,20 +254,6 @@ return {
       desc = 'Classic Terminal',
     },
     {
-      '<leader>.',
-      function()
-        Snacks.scratch()
-      end,
-      desc = 'Toggle Scratch Buffer',
-    },
-    {
-      '<leader>,',
-      function()
-        Snacks.scratch.select()
-      end,
-      desc = 'Select Scratch Buffer',
-    },
-    {
       '<leader>bd',
       function()
         Snacks.bufdelete()
