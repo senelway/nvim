@@ -63,22 +63,30 @@ return {
     },
 
     -- GH CLIENT
+
     {
       '<leader>g1',
       function()
-        Snacks.picker.gh_issue { state = 'open', assignee = '@me', repo = 'bidease/tasks' }
+        Snacks.picker.gh_issue { state = 'open' }
       end,
       desc = 'GitHub Issues (open)',
     },
     {
       '<leader>g2',
       function()
-        Snacks.picker.gh_issue { state = 'open', assignee = '@me', repo = 'bidease/adex-tasks' }
+        Snacks.picker.gh_issue { state = 'open', assignee = '@me', repo = 'bidease/tasks' }
       end,
       desc = 'GitHub Issues (open)',
     },
     {
       '<leader>g3',
+      function()
+        Snacks.picker.gh_issue { state = 'open', assignee = '@me', repo = 'bidease/adex-tasks' }
+      end,
+      desc = 'GitHub Issues (open)',
+    },
+    {
+      '<leader>g4',
       function()
         Snacks.picker.gh_pr()
       end,
