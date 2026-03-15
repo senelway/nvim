@@ -36,7 +36,7 @@ return {
       },
     }
 
-    require('lualine').setup {
+    require('lualine').setup({
       extensions = { 'trouble', 'nvim-dap-ui' },
       options = {
         theme = theme,
@@ -47,6 +47,6 @@ return {
         lualine_a = {},
         lualine_c = { { 'filename', path = 1 } },
       },
-    }
+    })
   end,
 }
