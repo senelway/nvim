@@ -20,6 +20,7 @@ return {
     { '<leader>ad', '<cmd>ClaudeCodeDiffDeny<cr>', desc = 'Deny diff' },
   },
   opts = {
+    terminal_cmd = '/home/senelway/.local/bin/claude',
     diff_opts = {
       auto_close_on_accept = true,
       vertical_split = false,

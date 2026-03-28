@@ -7,7 +7,7 @@ return {
     {
       '<leader>f',
       function()
-        require('conform').format { async = true, lsp_format = 'fallback' }
+        require('conform').format({ async = true, lsp_format = 'fallback' })
       end,
       mode = '',
       desc = '[F]ormat buffer',
@@ -24,7 +24,7 @@ return {
         return nil
       else
         return {
-          timeout_ms = 500,
+          timeout_ms = 3000,
           lsp_format = 'fallback',
         }
       end
@@ -32,9 +32,10 @@ return {
     formatters_by_ft = {
       lua = { 'stylua' },
       go = { 'gofumpt', 'goimports' },
-      -- javascript = { 'prettierd', stop_after_first = true },
-      -- typescript = { 'prettierd', stop_after_first = true },
-      -- typescriptreact = { 'prettierd', stop_after_first = true },
+      javascript = { 'eslint_d' },
+      javascriptreact = { 'eslint_d' },
+      typescript = { 'eslint_d' },
+      typescriptreact = { 'eslint_d' },
     },
   },
 }

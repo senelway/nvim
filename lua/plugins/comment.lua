@@ -1,7 +1,7 @@
 return {
   {
     'numToStr/Comment.nvim',
-    vent = { 'BufReadPost', 'BufNewFile' },
+    event = { 'BufReadPost', 'BufNewFile' },
     opts = {
       toggler = {
         line = '<leader>/',
@@ -12,6 +12,5 @@ return {
         block = '<leader>?',
       },
     },
-    lazy = false,
   },
 }
