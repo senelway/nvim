@@ -109,7 +109,6 @@ return {
       'css-lsp',
       'html-lsp',
       'eslint_d',
-      'stylelint-lsp',
       'tailwindcss-language-server',
       'svelte-language-server',
     })
