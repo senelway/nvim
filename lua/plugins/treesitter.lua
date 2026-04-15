@@ -3,7 +3,7 @@ return {
   lazy = false,
   build = ':TSUpdate',
   config = function()
-    require('nvim-treesitter.install').ensure_installed({
+    require('nvim-treesitter').install({
       'go',
       'lua',
       'tsx',
@@ -20,11 +20,25 @@ return {
     })
 
     vim.api.nvim_create_autocmd('FileType', {
-      callback = function(args)
-        local language = vim.treesitter.language.get_lang(args.match)
-        if language and vim.treesitter.language.add(language) then
-          vim.treesitter.start(args.buf, language)
-        end
+      pattern = {
+        'go',
+        'lua',
+        'typescript',
+        'typescriptreact',
+        'javascript',
+        'javascriptreact',
+        'html',
+        'css',
+        'scss',
+        'sql',
+        'markdown',
+        'json',
+        'http',
+        'cs',
+        'svelte',
+      },
+      callback = function()
+        vim.treesitter.start()
       end,
     })
   end,
