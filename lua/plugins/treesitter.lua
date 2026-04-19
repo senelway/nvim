@@ -3,7 +3,7 @@ return {
   lazy = false,
   build = ':TSUpdate',
   config = function()
-    require('nvim-treesitter').install({
+    local wanted = {
       'go',
       'lua',
       'tsx',
@@ -17,28 +17,20 @@ return {
       'http',
       'c_sharp',
       'svelte',
-    })
+    }
+    local installed = require('nvim-treesitter.config').get_installed()
+    local todo = vim
+      .iter(wanted)
+      :filter(function(p)
+        return not vim.tbl_contains(installed, p)
+      end)
+      :totable()
+    require('nvim-treesitter').install(todo)
 
     vim.api.nvim_create_autocmd('FileType', {
-      pattern = {
-        'go',
-        'lua',
-        'typescript',
-        'typescriptreact',
-        'javascript',
-        'javascriptreact',
-        'html',
-        'css',
-        'scss',
-        'sql',
-        'markdown',
-        'json',
-        'http',
-        'cs',
-        'svelte',
-      },
       callback = function()
-        vim.treesitter.start()
+        pcall(vim.treesitter.start)
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end,
     })
   end,
