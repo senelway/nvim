@@ -9,8 +9,12 @@ return {
     'saghen/blink.cmp',
   },
   config = function()
+    local lsp_attach_group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true })
+    local lsp_highlight_group = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+    local lsp_detach_group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true })
+
     vim.api.nvim_create_autocmd('LspAttach', {
-      group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+      group = lsp_attach_group,
       callback = function(event)
         local map = function(keys, func, desc)
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
@@ -26,24 +30,23 @@ return {
 
         local client = vim.lsp.get_client_by_id(event.data.client_id)
         if client and client:supports_method('textDocument/documentHighlight', event.buf) then
-          local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
           vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
             buffer = event.buf,
-            group = highlight_augroup,
+            group = lsp_highlight_group,
             callback = vim.lsp.buf.document_highlight,
           })
 
           vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
             buffer = event.buf,
-            group = highlight_augroup,
+            group = lsp_highlight_group,
             callback = vim.lsp.buf.clear_references,
           })
 
           vim.api.nvim_create_autocmd('LspDetach', {
-            group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
+            group = lsp_detach_group,
             callback = function(event2)
               vim.lsp.buf.clear_references()
-              vim.api.nvim_clear_autocmds({ group = 'kickstart-lsp-highlight', buffer = event2.buf })
+              vim.api.nvim_clear_autocmds({ group = lsp_highlight_group, buffer = event2.buf })
             end,
           })
         end
@@ -67,6 +70,18 @@ return {
     local capabilities = require('blink.cmp').get_lsp_capabilities()
 
     local servers = {
+      kotlin_language_server = {
+        cmd_env = {
+          JAVA_HOME = '/usr/lib/jvm/java-17-openjdk',
+        },
+        settings = {
+          kotlin = {
+            diagnostics = {
+              enabled = false,
+            },
+          },
+        },
+      },
       cssls = {
         settings = {
           scss = { lint = { unknownAtRules = 'ignore' } },
@@ -91,7 +106,7 @@ return {
       },
     }
 
-    local ensure_installed = vim.tbl_keys(servers or {})
+    local ensure_installed = vim.tbl_keys(servers)
     vim.list_extend(ensure_installed, {
       'tree-sitter-cli',
       'stylua',
@@ -124,5 +139,6 @@ return {
       vim.lsp.config(name, server)
       vim.lsp.enable(name)
     end
+    vim.lsp.enable('sourcekit')
   end,
 }
