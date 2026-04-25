@@ -36,3 +36,5 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 vim.opt.confirm = true
+
+vim.filetype.add({ extension = { mdx = 'markdown' } })

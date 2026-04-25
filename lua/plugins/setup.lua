@@ -3,6 +3,7 @@ return {
   require('plugins.cmp'),
   require('plugins.ts_ls'),
   require('plugins.lsp'),
+  require('plugins.roslyn'),
   require('plugins.snacks'),
 
   require('plugins.guess_indent'),
