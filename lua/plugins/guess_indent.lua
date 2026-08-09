@@ -1,3 +1,3 @@
 return {
-  { 'NMAC427/guess-indent.nvim', opts = {} },
+  { 'NMAC427/guess-indent.nvim', event = { 'BufReadPost', 'BufNewFile' }, opts = {} },
 }

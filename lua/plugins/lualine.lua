@@ -1,6 +1,8 @@
 return {
   'nvim-lualine/lualine.nvim',
-  dependencies = { 'nvim-mini/mini.icons', 'folke/trouble.nvim', 'rcarriga/nvim-dap-ui' },
+  -- trouble/nvim-dap-ui are NOT deps: their lualine extensions only touch those
+  -- modules from inside a buffer of that filetype, by which point they are loaded.
+  dependencies = { 'nvim-mini/mini.icons' },
   config = function()
     local C = require('catppuccin.palettes').get_palette()
 
