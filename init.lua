@@ -28,34 +28,19 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup(require 'plugins.setup', {
+  rocks = { enabled = false },
   performance = {
     rtp = {
+      -- names must match $VIMRUNTIME/plugin/<name>.{vim,lua}
       disabled_plugins = {
-        'netrwPlugin',
-        'netrw',
-        '2html_plugin',
-        'tohtml',
-        'getscript',
-        'getscriptPlugin',
         'gzip',
-        'logipat',
         'matchit',
-        'tar',
-        'tarPlugin',
-        'rrhelper',
-        'spellfile_plugin',
-        'vimball',
-        'vimballPlugin',
-        'zip',
-        'zipPlugin',
-        'tutor',
+        'netrwPlugin',
         'rplugin',
-        'syntax',
-        'synmenu',
-        'optwin',
-        'compiler',
-        'bugreport',
-        'ftplugin',
+        'spellfile',
+        'tarPlugin',
+        'tutor',
+        'zipPlugin',
       },
     },
   },

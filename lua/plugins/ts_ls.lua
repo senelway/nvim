@@ -17,5 +17,5 @@ return {
       },
     }
   end,
-  ft = { 'typescript', 'typescriptreact' },
+  ft = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
 }

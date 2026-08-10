@@ -1,5 +1,7 @@
 return {
   'neovim/nvim-lspconfig',
+  event = { 'BufReadPre', 'BufNewFile' },
+  cmd = { 'Mason', 'MasonUpdate', 'MasonToolsInstall' },
   dependencies = {
     {
       'mason-org/mason.nvim',
@@ -17,6 +19,9 @@ return {
     'saghen/blink.cmp',
   },
   config = function()
+    -- lsp.log never rotates; the default WARN level grew it to ~900MB. Raise when debugging a server.
+    vim.lsp.log.set_level('OFF')
+
     local lsp_attach_group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true })
     local lsp_highlight_group = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
     local lsp_detach_group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true })
@@ -33,7 +38,7 @@ return {
         end, '[G]oto [D]efinition')
         map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
         map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-        map('<C-M>', vim.lsp.buf.signature_help, 'Signature Documentation')
+        map('<C-s>', vim.lsp.buf.signature_help, 'Signature Documentation')
         map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
         local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -72,7 +77,11 @@ return {
       underline = { severity = vim.diagnostic.severity.ERROR },
       virtual_text = true,
       virtual_lines = false,
-      jump = { float = true },
+      jump = {
+        on_jump = function(_, bufnr)
+          vim.diagnostic.open_float({ bufnr = bufnr, scope = 'cursor', focus = false })
+        end,
+      },
     })
 
     local capabilities = require('blink.cmp').get_lsp_capabilities()
@@ -97,46 +106,40 @@ return {
       },
       lua_ls = {
         settings = {
+          -- workspace.library is left to lazydev.nvim, which resolves it per-require
           Lua = {
             runtime = { version = 'LuaJIT' },
-            workspace = {
-              checkThirdParty = false,
-              library = {
-                '${3rd}/luv/library',
-                unpack(vim.api.nvim_get_runtime_file('', true)),
-              },
-            },
-          },
-          completion = {
-            callSnippet = 'Replace',
+            workspace = { checkThirdParty = false },
+            completion = { callSnippet = 'Replace' },
+            diagnostics = { globals = { 'vim', 'Snacks' } },
           },
         },
       },
     }
 
-    local ensure_installed = vim.tbl_keys(servers)
-    vim.list_extend(ensure_installed, {
-      'tree-sitter-cli',
-      'stylua',
-      'goimports',
-      'gofumpt',
-      'roslyn',
-      'delve',
-      'jsonlint',
-      'golangci-lint',
-      'htmlhint',
-      'gopls',
-      'golangci-lint-langserver',
-      'rust_analyzer',
-      'lua-language-server',
-      'css-lsp',
-      'html-lsp',
-      'eslint_d',
-      'tailwindcss-language-server',
-      'svelte-language-server',
+    -- Mason registry package names, not lspconfig server names.
+    require('mason-tool-installer').setup({
+      ensure_installed = {
+        'tree-sitter-cli',
+        'stylua',
+        'goimports',
+        'gofumpt',
+        'roslyn-language-server',
+        'jsonlint',
+        'golangci-lint',
+        'htmlhint',
+        'gopls',
+        'golangci-lint-langserver',
+        'rust-analyzer',
+        'lua-language-server',
+        'css-lsp',
+        'html-lsp',
+        'kotlin-language-server',
+        'eslint_d',
+        'tailwindcss-language-server',
+        'svelte-language-server',
+      },
     })
-
-    require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
     require('mason-lspconfig').setup({
       ensure_installed = {},
