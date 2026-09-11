@@ -24,6 +24,7 @@ return {
   require('plugins.lint'),
 
   require('plugins.claude'),
+  require('plugins.sidekick'),
   require('plugins.devdocs'),
   require('plugins.markdown'),
   require('plugins.vinote'),
